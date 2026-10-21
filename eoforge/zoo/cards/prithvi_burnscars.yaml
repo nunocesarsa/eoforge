@@ -1,0 +1,30 @@
+id: prithvi-burnscars
+name: Prithvi-EO-2.0 burn scars
+adapter: terratorch
+task: segmentation
+description: >
+  NASA/IBM Prithvi-EO-2.0 300M foundation model fine-tuned to map burned areas from a single
+  Harmonized Landsat Sentinel-2 (HLS) image.
+sensor: HLS / Sentinel-2 surface reflectance (x 10000)
+bands: [B02, B03, B04, B8A, B11, B12]
+resolution_m: 30
+classes:
+  - {value: 0, name: not burned, colour: "#d9d9d9"}
+  - {value: 1, name: burned, colour: "#e31a1c"}
+params:
+  band_fallback: {B8A: B08}
+  scale: 0.0001
+  tile: 512
+  overlap: 64
+  batch: 1
+weights:
+  hf_repo: ibm-nasa-geospatial/Prithvi-EO-2.0-300M-BurnScars
+  file: Prithvi_EO_V2_300M_BurnScars.pt
+  files: [burn_scars_config.yaml]
+licence: Apache-2.0
+source: https://huggingface.co/ibm-nasa-geospatial/Prithvi-EO-2.0-300M-BurnScars
+citation: "Szwarcman et al. (2024) Prithvi-EO-2.0. arXiv:2412.02732"
+notes: >
+  Trained on HLS at 30 m over the continental US. 10 m Sentinel-2 runs, but resample to 30 m for the
+  closest match. About 1.3 GB download on first use.
+install: "bash install.sh   (installs every model; see README)"

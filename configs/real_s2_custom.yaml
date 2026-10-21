@@ -1,0 +1,34 @@
+# Real Sentinel-2 test: Slovenia, 2017 growing-season composite, land-use reference polygons.
+# Build the data first:  python examples/real_s2_slovenia.py <eo-learn>/example_data/TestEOPatch real_data
+name: real_s2_custom
+output_dir: ../runs
+
+data:
+  source: local
+  path: ../real_data/s2_slovenia_2017_AprOct.tif
+  bands: [2, 3, 4, 5, 6, 7, 8, 9, 12, 13]   # drop B01, B09, B10 (atmospheric)
+
+labels:
+  path: ../real_data/lulc_reference.gpkg
+  class_field: LULC_NAME
+  exclude: ["", "cultivated land"]  # empty = no-data polygons; cultivated land has only 11 px
+  classes: [forest, grassland, shrubland, artificial surface]
+
+model:
+  arch: ../examples/my_model.py:build
+  params: {width: 32}
+
+train:
+  chip_size: 48
+  chips_per_epoch: 256
+  batch_size: 16
+  epochs: 30
+  lr: 0.002
+  val_fraction: 0.25
+  block_size: 25                    # 250 m blocks: 16 blocks over the 1 km2 patch
+  class_weights: balanced
+
+predict:
+  tile_size: 128
+  overlap: 16
+  write_probabilities: true

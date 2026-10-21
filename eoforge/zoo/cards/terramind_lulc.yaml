@@ -1,0 +1,38 @@
+id: terramind-lulc
+name: TerraMind generated land cover (Esri classes)
+adapter: terramind
+task: segmentation
+description: >
+  IBM/ESA TerraMind 1.0 base generates a land-cover map in Esri's 10 m class scheme from a
+  Sentinel-2 L2A image. Global, including Africa. Generative ("mental image"): good for a quick
+  look and for comparison, not a measured classification.
+sensor: Sentinel-2 L2A (surface reflectance x 10000)
+bands: [B01, B02, B03, B04, B05, B06, B07, B08, B8A, B09, B11, B12]
+resolution_m: 10
+classes:
+  - {value: 0, name: no data, colour: "#000000"}
+  - {value: 1, name: water, colour: "#3171ad"}
+  - {value: 2, name: trees, colour: "#469c76"}
+  - {value: 3, name: flooded vegetation, colour: "#83ca70"}
+  - {value: 4, name: crops, colour: "#eae159"}
+  - {value: 5, name: built area, colour: "#c07cb8"}
+  - {value: 6, name: bare ground, colour: "#c19368"}
+  - {value: 7, name: snow and ice, colour: "#6fb2e4"}
+  - {value: 8, name: clouds, colour: "#f1f1f1"}
+  - {value: 9, name: rangeland, colour: "#c66526"}
+params:
+  variant: terramind_v1_base_generate
+  timesteps: 10
+  tile: 256
+  overlap: 32
+  seed: 0
+  band_fallback: {B01: B02, B09: B8A}
+licence: Apache-2.0
+source: https://huggingface.co/ibm-esa-geospatial/TerraMind-1.0-base
+citation: "Jakubik, J. et al. (2025) TerraMind: Large-Scale Generative Multimodality for Earth Observation. arXiv:2504.11171"
+notes: >
+  Needs all 12 L2A bands; images without B01 or B09 (like the LandCoverNet stacks) use B02 and B8A in
+  their place, with a warning. Trained on 224-256 px tiles. Generation is stochastic; the seed makes
+  maps repeatable. Class order and colours follow TerraMind's own plotting code. Change variant to
+  terramind_v1_small_generate or terramind_v1_tiny_generate for speed.
+install: "bash install.sh   (installs every model; see README)"

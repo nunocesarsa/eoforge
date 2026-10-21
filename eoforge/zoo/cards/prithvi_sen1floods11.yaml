@@ -1,0 +1,28 @@
+id: prithvi-floods
+name: Prithvi-EO-2.0 flood mapping (Sen1Floods11)
+adapter: terratorch
+task: segmentation
+description: >
+  NASA/IBM Prithvi-EO-2.0 300M foundation model (ViT) fine-tuned on Sen1Floods11 to map water and
+  flooded areas from a single Sentinel-2 image.
+sensor: Sentinel-2 L1C (reflectance x 10000)
+bands: [B02, B03, B04, B8A, B11, B12]
+resolution_m: 10
+classes:
+  - {value: 0, name: no water, colour: "#d9d9d9"}
+  - {value: 1, name: water / flood, colour: "#1f78b4"}
+params:
+  band_fallback: {B8A: B08}
+  scale: 0.0001
+  tile: 512
+  overlap: 64
+  batch: 1
+weights:
+  hf_repo: ibm-nasa-geospatial/Prithvi-EO-2.0-300M-TL-Sen1Floods11
+  file: Prithvi-EO-V2-300M-TL-Sen1Floods11.pt
+  files: [config.yaml]
+licence: Apache-2.0
+source: https://huggingface.co/ibm-nasa-geospatial/Prithvi-EO-2.0-300M-TL-Sen1Floods11
+citation: "Szwarcman et al. (2024) Prithvi-EO-2.0. arXiv:2412.02732"
+notes: About 1.3 GB download on first use; needs ~3 GB GPU memory at 512 px tiles.
+install: "bash install.sh   (installs every model; see README)"

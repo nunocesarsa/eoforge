@@ -1,0 +1,25 @@
+id: sam2
+name: Segment Anything 2 (objects)
+adapter: samgeo
+task: objects
+description: >
+  Meta's Segment Anything Model 2 through segment-geospatial: outlines every distinct object or
+  patch in a true-colour view, without class names. Best on high-resolution imagery (drone,
+  aerial, < 2 m); on 10 m Sentinel-2 it outlines fields, water bodies and large patches.
+sensor: any RGB (or any 3 bands)
+bands: [B04, B03, B02]
+classes: []
+params:
+  input: any
+  version: 2
+  model_id: sam2-hiera-large
+  stretch: [2, 98]
+  sam_kwargs: {points_per_side: 32, pred_iou_thresh: 0.8, stability_score_thresh: 0.9, min_mask_region_area: 25}
+  write_vector: true
+licence: Apache-2.0 (SAM 2, Meta); MIT (segment-geospatial)
+source: https://samgeo.gishub.org
+citation: "Ravi et al. (2024) SAM 2: Segment Anything in Images and Videos. Wu & Osco (2023) samgeo, JOSS."
+notes: >
+  Downloads ~900 MB for sam2-hiera-large on first use; use sam2-hiera-small on smaller GPUs or large
+  images. For an RGB GeoTIFF without band names, set bands to 1,2,3.
+install: "SAM2_BUILD_CUDA=0 pip install --no-build-isolation sam2 -c requirements/pascal-gpu-constraints.txt"

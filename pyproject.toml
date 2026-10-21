@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eoforge"
+version = "0.6.0"
+description = "Bring any deep learning architecture, fine-tune it on Earth observation imagery, get georeferenced maps with uncertainty."
+authors = [{ name = "Nuno César de Sá" }]
+requires-python = ">=3.10"
+dependencies = [
+  "torch>=2.1",
+  "numpy",
+  "rasterio>=1.3",
+  "geopandas>=0.14",
+  "shapely>=2",
+  "pyyaml",
+  # model zoo and web app (all installed by default)
+  "timm>=0.9",
+  "onnx",
+  "onnxruntime",
+  "huggingface_hub",
+  "terratorch",
+  "omnicloudmask",
+  "segment-geospatial",
+  "ultralytics",
+  "scipy",
+  "streamlit",
+  "streamlit-folium",
+  "folium",
+  "matplotlib",
+  "pillow",
+  "boto3",
+]
+
+[project.optional-dependencies]
+stac = ["pystac-client", "odc-stac", "planetary-computer"]
+gee = ["earthengine-api", "geemap"]
+gpu-onnx = ["onnxruntime-gpu"]       # optional: run ONNX models (Dynamic World) on the GPU too
+
+[project.scripts]
+eoforge = "eoforge.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["eoforge*"]
+
+[tool.setuptools.package-data]
+eoforge = ["zoo/cards/*.yaml", "zoo/cards/weights/*", "app/*.py"]

@@ -1,0 +1,14 @@
+dynamic_world_forward.onnx
+
+Derived from the Dynamic World forward model (TensorFlow SavedModel) published by Google LLC at
+https://github.com/google/dynamicworld under the Apache License, Version 2.0 (see
+DYNAMIC_WORLD_LICENSE.txt). Copyright 2021 Google LLC.
+
+Modifications: converted to ONNX (opset 18) with tf2onnx 1.17; the TensorFlow ScaleAndTranslate
+operation (antialiased triangle resize) was replaced by an ONNX Resize node (linear, antialias=1,
+half_pixel). Against the original TensorFlow model, predicted classes agree on 99.96% of pixels of a
+real Sentinel-2 L1C composite and class probabilities differ by at most 0.02-0.03.
+Conversion script: tools/convert_dynamic_world.py.
+
+Reference: Brown, C.F., Brumby, S.P., Guzder-Williams, B. et al. Dynamic World, Near real-time global
+10 m land use land cover mapping. Sci Data 9, 251 (2022). https://doi.org/10.1038/s41597-022-01307-4

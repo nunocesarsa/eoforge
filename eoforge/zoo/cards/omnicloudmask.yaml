@@ -1,0 +1,29 @@
+id: omnicloudmask
+name: OmniCloudMask clouds and shadows
+adapter: omnicloudmask
+task: cloudmask
+description: >
+  Sensor-agnostic cloud and cloud-shadow segmentation from red, green and near-infrared bands
+  (Sentinel-2, Landsat 8, PlanetScope, Maxar) at 10-50 m.
+sensor: Sentinel-2 L1C or L2A, Landsat 8, others with red, green and NIR
+bands: [B04, B03, B8A]
+resolution_m: 10
+classes:
+  - {value: 0, name: clear, colour: "#7fbf7b"}
+  - {value: 1, name: thick cloud, colour: "#ffffff"}
+  - {value: 2, name: thin cloud, colour: "#9ecae1"}
+  - {value: 3, name: cloud shadow, colour: "#4d4d4d"}
+params:
+  band_fallback: {B8A: B08}
+  input: any
+  patch_size: 1000
+  patch_overlap: 300
+  batch_size: 1
+  dtype: fp32
+licence: MIT
+source: https://github.com/DPIRD-DMA/OmniCloudMask
+citation: "Wright, N. J. et al. (2025) Training sensor-agnostic deep learning models for remote sensing: achieving state-of-the-art cloud and cloud shadow identification with OmniCloudMask. Remote Sensing of Environment 322, 114694. https://doi.org/10.1016/j.rse.2025.114694"
+notes: >
+  For Sentinel-2 the package uses B8A as NIR; B08 also works. Weights download from Hugging Face on
+  first use. On a GTX 1070 keep dtype fp32 (no fast fp16).
+install: "bash install.sh   (installs every model; see README)"

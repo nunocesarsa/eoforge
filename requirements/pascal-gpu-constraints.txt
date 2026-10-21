@@ -1,0 +1,6 @@
+# Keep the last PyTorch build that supports Pascal GPUs (GTX 10xx) when installing other packages:
+#   pip install <package> -c requirements/pascal-gpu-constraints.txt
+# Install torch itself from the CUDA 12.6 index first:
+#   pip install torch==2.14.0 torchvision==0.29.0 --index-url https://download.pytorch.org/whl/cu126
+torch==2.14.0
+torchvision==0.29.0

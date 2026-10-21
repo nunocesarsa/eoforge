@@ -1,0 +1,29 @@
+id: ftw-fields-1date
+name: Fields of The World, one date
+adapter: ftw
+task: segmentation
+description: >
+  Fields of The World v2 single-window U-Net: field interiors and boundaries from one Sentinel-2
+  image (best near the start of the growing season). A bit less accurate than the two-date models.
+sensor: Sentinel-2 L2A, one date
+bands: [B04, B03, B02, B08]
+resolution_m: 10
+classes:
+  - {value: 0, name: not a field, colour: "#d9d9d9"}
+  - {value: 1, name: field, colour: "#4daf4a"}
+  - {value: 2, name: field boundary, colour: "#984ea3"}
+params:
+  windows: 1
+  scale: 3000
+  resize_factor: 2
+  tile: 256
+  overlap: 16
+  batch: 4
+  min_field_px: 10
+  write_vector: true
+weights: {url: "https://github.com/fieldsoftheworld/ftw-baselines/releases/download/v2/3_Class_FULL_FTW_Pretrained_singleWindow_v2.ckpt"}
+licence: "Mixed open licences (includes CC-BY-NC-SA training data: non-commercial use); code MIT"
+source: https://github.com/fieldsoftheworld/ftw-baselines
+citation: "Kerner, H. et al. (2024) Fields of The World. arXiv:2409.16252"
+notes: Also writes fields.gpkg. For seasonal stacks pick the band set ("Use bands from") of the early season.
+install: "bash install.sh   (installs every model; see README)"

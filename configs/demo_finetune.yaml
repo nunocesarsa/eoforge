@@ -1,0 +1,40 @@
+# Land-cover segmentation on a local GeoTIFF with vector labels.
+# Run:  eoforge demo --out demo      then   eoforge train configs/demo_unet.yaml
+# Relative paths are resolved from this file's folder.
+
+name: demo_finetune
+output_dir: ../runs
+
+data:
+  source: local                 # local | stac | gee  (stac and gee are the next pipelines)
+  path: ../demo/scene_2023.tif
+  bands: null                   # e.g. [2, 3, 4, 8] to pick 1-based bands; null = all
+
+labels:
+  path: ../demo/labels_2023.gpkg
+  class_field: class
+  classes: [water, grassland, shrubland, woodland, bare, cropland]   # fixes class ids
+  point_buffer: 10              # metres: points become ~3x3 px patches
+
+model:
+  arch: unet                    # unet | fcn | timm:resnet18 | path/to/file.py:builder
+  params: {base: 24, depth: 3, dropout: 0.1}
+  weights: ../runs/demo_unet/best.pt
+  freeze_encoder: true
+
+train:
+  chip_size: 64
+  chips_per_epoch: 384
+  batch_size: 16
+  epochs: 3
+  lr: 0.0005
+  val_fraction: 0.25
+  block_size: 128               # spatial blocks for the train/val split
+  class_weights: balanced
+  device: auto
+
+predict:
+  tile_size: 256
+  overlap: 32
+  write_entropy: true
+  write_probabilities: false

@@ -1,0 +1,34 @@
+id: ftw-fields-fast
+name: Fields of The World, field boundaries (B3, CC-BY, fast)
+adapter: ftw
+task: segmentation
+description: >
+  Fields of The World v3.1 U-Net (EfficientNet-B3) trained on 24 countries: maps field interiors and
+  field boundaries from Sentinel-2 at two dates, the start and the end of the growing season, and
+  outlines individual fields as polygons.
+sensor: Sentinel-2 L2A, two dates
+bands: [B04, B03, B02, B08]
+resolution_m: 10
+classes:
+  - {value: 0, name: not a field, colour: "#d9d9d9"}
+  - {value: 1, name: field, colour: "#4daf4a"}
+  - {value: 2, name: field boundary, colour: "#984ea3"}
+params:
+  windows: 2
+  scale: 3000
+  resize_factor: 2
+  tile: 256
+  overlap: 16
+  batch: 4
+  min_field_px: 10
+  write_vector: true
+weights: {url: "https://github.com/fieldsoftheworld/ftw-baselines/releases/download/v3.1/prue_efnetb3_ccby_checkpoint.ckpt"}
+licence: CC-BY-4.0 (weights trained on CC-BY data only); code MIT
+source: https://github.com/fieldsoftheworld/ftw-baselines
+citation: "Kerner, H. et al. (2024) Fields of The World: A Machine Learning Benchmark Dataset for Global Agricultural Field Boundary Segmentation. arXiv:2409.16252"
+notes: >
+  Uses two band sets of one image (e.g. wet_ and dry_ in seasonal stacks: window A = start, window B =
+  end of season) or two separate images. Also writes fields.gpkg. Pasture can be mistaken for fields;
+  FTW suggests masking with a land-cover map. Non-CC-BY v3 checkpoints (slightly better) exist for
+  non-commercial use: change weights.url to .../v3/prue_efnet5_checkpoint.ckpt.
+install: "bash install.sh   (installs every model; see README)"

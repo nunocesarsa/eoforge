@@ -1,0 +1,42 @@
+name: example_unet_33LYE_20
+output_dir: ..
+data:
+  source: local
+  path: ../../showcase/landcovernet/33LYE_20_s2_2018.tif
+labels:
+  path: ../../showcase/landcovernet/33LYE_20_labels.tif
+  class_map:
+    1: water
+    2: artificial bare ground
+    3: natural bare ground
+    5: woody
+    6: cultivated
+    7: semi-natural vegetation
+  classes:
+  - water
+  - artificial bare ground
+  - natural bare ground
+  - woody
+  - cultivated
+  - semi-natural vegetation
+model:
+  arch: unet
+  params:
+    base: 32
+    depth: 3
+    dropout: 0.2
+train:
+  chip_size: 64
+  chips_per_epoch: 512
+  batch_size: 32
+  epochs: 40
+  lr: 0.002
+  val_fraction: 0.25
+  block_size: 64
+  class_weights: null
+  device: auto
+  seed: 42
+predict:
+  tile_size: 256
+  overlap: 32
+  write_probabilities: false

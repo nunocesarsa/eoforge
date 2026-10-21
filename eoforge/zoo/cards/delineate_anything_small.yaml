@@ -1,0 +1,31 @@
+id: delineate-anything-small
+name: Delineate Anything small (fast)
+adapter: delineate_anything
+task: objects
+description: >
+  YOLO instance segmentation trained on 22 million field outlines (FBIS-22M) at 0.25-10 m: outlines
+  each field directly as a polygon from one true-colour image. Works on Sentinel-2, aerial and drone
+  imagery.
+sensor: any RGB at 0.25-10 m (Sentinel-2 reflectance x 10000, or 8-bit RGB with scale 255)
+bands: [B04, B03, B02]
+classes: []
+params:
+  scale: 3000
+  tile: 256
+  overlap: 64
+  resize_factor: 2
+  conf: 0.05
+  iou: 0.3
+  max_det: 100
+  merge_iou: 0.3
+  merge_contain: 0.8
+  min_area_m2: 0
+  write_vector: true
+weights: {url: "https://hf.co/torchgeo/delineate-anything-s/resolve/69cd440b0c5bd450ced145e68294aa9393ddae05/delineate_anything_s_rgb_yolo11n-b879d643.pt", file: delineate_anything_s.pt}
+licence: AGPL-3.0 (weights and the ultralytics library)
+source: https://huggingface.co/torchgeo/delineate-anything-s
+citation: "Lavreniuk, M. et al. (2025) Delineate Anything: Resolution-Agnostic Field Boundary Delineation on Satellite Imagery. arXiv:2504.02534"
+notes: >
+  For an 8-bit RGB GeoTIFF (drone, aerial) set params.scale to 255 and choose bands 1,2,3. AGPL-3.0:
+  if you offer a service built on it, its source must be shared. Writes fields.gpkg.
+install: "bash install.sh   (installs every model; see README)"
